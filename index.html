@@ -2,6 +2,7 @@
 <html>
 <head>
   <title>SoundCloud Music Search</title>
+  <link rel="stylesheet" href="normalize.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -13,12 +14,19 @@
       <audio class="music-player" controls="controls" src=""></audio>
     </section>
     <section class="search">
-      <form class="search-form">
-        
+      <form id="search-form">
+        <span ><input type="text" name="search" id="search-bar" placeholder="Search for Artist"></span>
+        <span><input type="submit" name="submit" id="search-button" value="Search"></span>
       </form>
     </section>
-    <section class="results"></section>
+    <section class="results">
+      <h3>Search Results:</h3>
+      <div class="flex-containter all-results">
+
+      </div>
+    </section>
   </div>
-  <script src="main.js"></script>
+  <script type="text/javascript" src="token.js"></script>
+  <script type="text/javascript" src="main.js"></script>
 </body>
 </html>
