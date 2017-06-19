@@ -7,7 +7,8 @@
   // delcaring variables
   var formNode = document.getElementById('search-form');
   var searchBar = document.getElementById('search-bar');
-  var userSearchInput;
+  var allResults = document.querySelector('.all-results');
+  var userSearchInput = '';
   var headers = {};
   var tracksUrl = 'https://api.soundcloud.com/tracks/?client_id=' + SC_TOKEN + '&q=';
 
@@ -21,15 +22,46 @@
   formNode.addEventListener('submit', function(event) {
     event.preventDefault();
     userSearchInput = searchBar.value;
-    console.log('Artist: ', userSearchInput);
-
+    userSearchInputString = userSearchInput.toString();
+    console.log(userSearchInputString);
+    console.log('Artist: ', userSearchInputString);
+    tracksUrl = tracksUrl + userSearchInputString;
     fetch(tracksUrl, {headers: headers}).then(function(response){
-    // // console.log(userUrl);
-    //   response.json().then(function(data){
-    //     console.log(data);
-      });
+      console.log(tracksUrl);
+      response.json().then(function(data){
+        console.log(data);
 
+      // looping through all results to create tracks below
+      for(var i = 0; i < data.length; i++) {
+        var info = data[i];
+        var streamingInfo = {};
+
+        // each result div
+        var resultNode = document.createElement('a');
+        resultNode.setAttribute('href', '"' + info.stream_url + '"');
+        allResults.appendChild(resultNode);
+        // artwork
+        var artworkNode = document.createElement('div');
+        artworkNode.setAttribute('class', 'artwork');
+        artworkNode.innerHTML = '<img src="' + info.artwork_url + '">';
+        resultNode.appendChild(artworkNode);
+
+        // song title
+        var titleNode = document.createElement('p');
+        titleNode.setAttribute('class', 'song-title');
+        titleNode.textContent = info.title;
+        resultNode.appendChild(titleNode);
+
+        // // streaming url
+        // streamingInfo = {
+        //   'url': info.stream_url
+        // }
+        // console.log(streamingInfo);
+
+      }
+      });
     });
+  });
 
 
 
