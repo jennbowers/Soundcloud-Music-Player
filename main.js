@@ -8,6 +8,7 @@
   var formNode = document.getElementById('search-form');
   var searchBar = document.getElementById('search-bar');
   var allResults = document.querySelector('.all-results');
+  var audioPlayer = document.querySelector('.music-player');
   var userSearchInput = '';
   var headers = {};
   var tracksUrl = 'https://api.soundcloud.com/tracks/?client_id=' + SC_TOKEN + '&q=';
@@ -26,6 +27,7 @@
     console.log(userSearchInputString);
     console.log('Artist: ', userSearchInputString);
     tracksUrl = tracksUrl + userSearchInputString;
+
     fetch(tracksUrl, {headers: headers}).then(function(response){
       console.log(tracksUrl);
       response.json().then(function(data){
@@ -38,8 +40,13 @@
 
         // each result div
         var resultNode = document.createElement('a');
-        resultNode.setAttribute('href', '"' + info.stream_url + '"');
+        resultNode.setAttribute('class', 'result')
+        resultNode.setAttribute('href', '#');
         allResults.appendChild(resultNode);
+        resultNode.addEventListener('click', function(event) {
+          audioPlayer.setAttribute('src', info.stream_url + '?client_id=095fe1dcd09eb3d0e1d3d89c76f5618f');
+        });
+
         // artwork
         var artworkNode = document.createElement('div');
         artworkNode.setAttribute('class', 'artwork');
@@ -52,15 +59,17 @@
         titleNode.textContent = info.title;
         resultNode.appendChild(titleNode);
 
-        // // streaming url
-        // streamingInfo = {
-        //   'url': info.stream_url
-        // }
-        // console.log(streamingInfo);
 
       }
+
       });
+
     });
+
+    // resetting variables
+    userSearchInput = ' ';
+    tracksUrl = 'https://api.soundcloud.com/tracks/?client_id=' + SC_TOKEN + '&q=';
+
   });
 
 
